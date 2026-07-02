@@ -1,20 +1,30 @@
-public class Solution {
+class Solution {
 
-    public List<List<Integer>> subsets(int[] nums) {
-        List<List<Integer>> res = new ArrayList<>();
-        List<Integer> subset = new ArrayList<>();
-        dfs(nums, 0, subset, res);
-        return res;
-    }
+    void solve(int index, int[] nums,
+               List<List<Integer>> ans,
+               List<Integer> temp) {
 
-    private void dfs(int[] nums, int i, List<Integer> subset, List<List<Integer>> res) {
-        if (i >= nums.length) {
-            res.add(new ArrayList<>(subset));
+        if (index == nums.length) {
+            ans.add(new ArrayList<>(temp));
             return;
         }
-        subset.add(nums[i]);
-        dfs(nums, i + 1, subset, res);
-        subset.remove(subset.size() - 1);
-        dfs(nums, i + 1, subset, res);
+
+        // Take
+        temp.add(nums[index]);
+        solve(index + 1, nums, ans, temp);
+        temp.remove(temp.size() - 1);
+
+        // Not Take
+        solve(index + 1, nums, ans, temp);
+    }
+
+    public List<List<Integer>> subsets(int[] nums) {
+
+        List<List<Integer>> ans = new ArrayList<>();
+        List<Integer> temp = new ArrayList<>();
+
+        solve(0, nums, ans, temp);
+
+        return ans;
     }
 }
